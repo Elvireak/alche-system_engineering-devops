@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#
+# Configures nginx with a custom 404 error page containing
+# "Ceci n'est pas une page".
+
+apt-get update
+apt-get install -y nginx
+
+echo "Holberton School for the win!" > /var/www/html/index.nginx-debian.html
+
+mkdir -p /var/www/html/error_pages
+echo "Ceci n'est pas une page" > /var/www/html/error_pages/404.html
+
+sed -i '/^http {/a \\tserver_names_hash_bucket_size 64;' /etc/nginx/nginx.conf
+
+sed -i '/listen 80 default_server;/a \\terror_page 404 /error_pages/404.html;\n\tlocation /error_pages/ {\n\t\troot /var/www/html;\n\t\tinternal;\n\t}' /etc/nginx/sites-available/default
+
+service nginx start
+service nginx restart
