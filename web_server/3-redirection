@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
-# Configures my Nginx server so that /redirect_me is redirecting to another page
+# Updates package list, installs nginx, and configures a custom 404 page.
+
 sudo apt update -y
 sudo apt install nginx -y
-sudo sed -i '/server_name _;/a\location /redirect_me {\nreturn 301 https://github.com/Umutoni2;\n}' /etc/nginx/sites-available/default
+
+# Default page (from earlier task)
+echo "Holberton School for the win!" | sudo tee /var/www/html/index.html
+
+# Custom 404 page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+# Add error_page directive to nginx's default site config, if not already present
+if ! sudo grep -q "error_page 404" /etc/nginx/sites-available/default; then
+    sudo sed -i '/listen 80 default_server;/a \\terror_page 404 /404.html;' /etc/nginx/sites-available/default
+fi
+
 sudo service nginx restart
