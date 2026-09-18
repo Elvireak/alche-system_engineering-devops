@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
+# Fixes Apache by starting it and setting the correct index page.
 service apache2 start
+echo "Hello Holberton" > /var/www/html/index.html
