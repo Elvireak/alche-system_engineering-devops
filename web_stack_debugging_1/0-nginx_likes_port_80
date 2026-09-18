@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Fixes nginx so it listens on port 80 on all active IPv4 addresses
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx restart
